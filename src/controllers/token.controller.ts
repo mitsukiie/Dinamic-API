@@ -1,13 +1,10 @@
+import { postStorage } from '../utils/storage.utils';
 import { Request, Response } from 'express';
-import fs from 'fs';
-import path from 'path';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { postStorage } from '../utils/storage.utils';
 
 dotenv.config();
 
-// Chave secreta (ideal carregar via .env)
 const key = process.env.KEY || '';
 
 export class Token {
