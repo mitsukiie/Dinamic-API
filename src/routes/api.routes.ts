@@ -5,7 +5,7 @@ import { Token } from "../controllers/token.controller";
 const router = Router();
 
 // Rotas para /api/token
-router.get("/token", Token.create);
+router.post("/token", Token.create);
 
 
 export default router;

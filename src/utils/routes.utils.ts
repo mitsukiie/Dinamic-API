@@ -6,6 +6,7 @@ import { readJson } from "./json/readJson.utils";
  * @param filename Nome do arquivo
  */
 export function getData(filename: string): any | null {
-  const file = path.join(__dirname, "..", "data", "routes", filename);
+  const jsoname = filename.endsWith(".json") ? filename : `${filename}.json`;
+  const file = path.join(__dirname, "..", "data", "routes", jsoname);
   return readJson(file);
 }
