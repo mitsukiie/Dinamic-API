@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 
-export class Token {
+export class token {
     static create(req: Request, res: Response) {
         try {
 
