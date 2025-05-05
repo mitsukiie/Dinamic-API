@@ -130,6 +130,10 @@ curl -X POST http://localhost:3000/api/produtos \
 * O token e a key é salvo em `data/storage/token.json`.
 * As rotas criadas ficam salvas em `data/storage/routes.json`, e os dados de cada rota vão para `data/routes/:nome.json`.
 
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+
 ## Manutenção e Contato
 
 Caso encontre algum problema ou tenha sugestões de melhorias, entre em contato ou abra uma issue no repositório.
