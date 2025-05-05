@@ -1,23 +1,46 @@
+// src/utils/storage.utils.ts
+// Description: Utilitário para leitura e escrita de arquivos de armazenamento geral (como tokens, configurações, etc). Os dados são armazenados em arquivos JSON dentro da pasta /data/storage.
 import path from "path";
-import fs from "fs";
-import { readJson } from "./json/readJson.utils";
-import { saveJson } from "./json/saveJson.utils";
-import { json } from "stream/consumers";
+import { Json } from "./json.utils";
 
 /**
- * Retorna e salvar os dados dos arquivos das rota
- * @param filename - Nome do arquivo
- * @param data - Dados para salvar
+ * Classe utilitária para leitura e escrita de arquivos de armazenamento geral (como tokens, configurações, etc).
+ * Os dados são armazenados em arquivos JSON dentro da pasta /data/storage.
  */
+export class Storage {
 
-export function getStorage(filename: string): any | null {
-  const jsoname = filename.endsWith(".json") ? filename : `${filename}.json`;
-  const file = path.join(__dirname, "..", "data", "storage", jsoname);
-  return readJson(file);
-}
+  /**
+   * Lê o conteúdo de um arquivo de armazenamento.
+   * 
+   * @param filename - Nome do arquivo (com ou sem extensão .json).
+   * @returns Objeto lido do arquivo ou null se não existir ou falhar.
+   */
+  static get(filename: string): any | null {
+    // Garante a extensão .json
+    const jsoname = filename.endsWith(".json") ? filename : `${filename}.json`;
 
-export function postStorage(filename: string, data: any): boolean {
-  const jsoname = filename.endsWith(".json") ? filename : `${filename}.json`;
-  const file = path.join(__dirname, "..", "data", "storage", jsoname);
-  return saveJson(file, data);
+    // Caminho completo até o arquivo de armazenamento
+    const file = path.join(__dirname, "..", "data", "storage", jsoname);
+
+    // Retorna o conteúdo lido do arquivo
+    return Json.read(file);
+  }
+
+  /**
+   * Salva um objeto em um arquivo de armazenamento.
+   * 
+   * @param filename - Nome do arquivo (com ou sem extensão .json).
+   * @param data - Objeto a ser salvo como JSON.
+   * @returns boolean - true se salvar com sucesso, false caso contrário.
+   */
+  static post(filename: string, data: any): boolean {
+    // Garante a extensão .json
+    const jsoname = filename.endsWith(".json") ? filename : `${filename}.json`;
+
+    // Caminho completo até o arquivo de armazenamento
+    const file = path.join(__dirname, "..", "data", "storage", jsoname);
+
+    // Salva o conteúdo no arquivo
+    return Json.save(file, data);
+  }
 }

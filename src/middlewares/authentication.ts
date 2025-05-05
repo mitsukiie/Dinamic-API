@@ -1,16 +1,10 @@
-import { getStorage } from '../utils/storage.utils';
+// src/middlewares/authentication.ts
+// Description: Middleware de autenticação via token JWT.
+import { Storage } from '../utils/storage.utils';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 
-dotenv.config();
-
-// Chave para verificar o token, armazenada em uma variável de ambiente
-const key = process.env.KEY || '';
-
-// Recupera o token armazenado no arquivo "token.json"
-const { token } = getStorage('token.json');
-
+// Middleware de autenticação via token JWT
 export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
     // Verifica se o cabeçalho "Authorization" está presente na requisição
     const authorization = req.headers['authorization'];
@@ -27,10 +21,22 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
         return;
     }
 
-    // O formato esperado no cabeçalho é "Bearer <token>"
+    // Recupera o token armazenado no arquivo JSON
+    const data = Storage.get('token');
+    if (!data) {
+        res.status(403).json({ 
+            message: '〔API〕» Token não configurado.',
+            suggestion: "Use a rota /token/create para criar um."
+        });
+        return;
+    }
+
+    const { token, key } = data;
+
+    // O formato esperado é "Bearer <token>"
     const [type, Token] = authorization.split(' ');
 
-    // Verifica se os campos "Bearer" e o "Token" estão presentes e corretos
+    // Verifica se o tipo e o token estão presentes e corretos
     const missingFields = [];
     if (type !== 'Bearer') missingFields.push('Bearer');
     if (!Token) missingFields.push('Token');
@@ -47,7 +53,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
         return;
     }
 
-    // Verifica se o token enviado no cabeçalho é igual ao token armazenado
+    // Compara o token recebido com o que foi salvo na criação
     if (Token !== token) {
         res.status(403).json({
             error: {
@@ -60,10 +66,11 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
     }
 
     try {
-        // Verifica se o token é válido e assinado corretamente
+        // Verifica se o token é válido e assinado com a chave correta
         jwt.verify(Token, key);
-        next(); // Token válido, continua para a próxima função
+        next(); // Token válido, segue para o próximo middleware ou rota
     } catch (error) {
+        // Token inválido ou expirado
         res.status(403).json({
             error: {
                 code: "TOKEN_VERIFICATION_FAILED",
