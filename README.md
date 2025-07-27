@@ -1,4 +1,4 @@
-# 📌 Fast API - Documentação
+# 📌 Dinamic API - Documentação
 
 Uma API rápida, leve e dinâmica feita com **TypeScript** e **Express**, que permite criar rotas personalizadas em tempo real e armazenar dados localmente em arquivos `.json`.
 
@@ -13,7 +13,7 @@ Uma API rápida, leve e dinâmica feita com **TypeScript** e **Express**, que pe
 ## 📁 Estrutura do Projeto
 
 ```
-📦 Shouyo-API
+📦 Dinamic-API
 ┣ 📂 src
 ┃ ┣ 📂 controllers
 ┃ ┃ ┣ 📜 route.controller.ts     # Lógica das rotas dinâmicas
